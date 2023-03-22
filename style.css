@@ -1,7 +1,13 @@
 html {
-   line-height: 1.7;
-   font-family: sans-serif;
+   line-height: 1.2;
    font-size: 20px;
    color: #1a1a1a;
    background-color: #fdfdfd;
-}
+   h1, h2, h3, h4, h5, h6 {
+        font-family: "Times New Roman", Georgia, Serif;
+        letter-spacing: 5px;
+        }
+   body {
+       font-family: "Times New Roman", Georgia, Serif;
+       }
+   }
