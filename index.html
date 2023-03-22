@@ -41,22 +41,22 @@ data together into a single image. For current simulations, each pixel
 of the simulation map represents a 1 meter by 1 meter area. Figure 4
 shows the layers that are fused for the simulation risk-map.</p>
 <p><img src="./media/image1.png"
-style="width:4.58056in;height:3.97917in" /></p>
+style="width:4.58056in;height:3.97917in" class="center"/></p>
 <p><img src="./media/image3.png"
-style="width:2.9067in;height:3.91621in" />The Phase I minefield
-prediction algorithm applies mine type and positional information (in
-practice, sensor detection data) to produce a final gridded mine
-risk-map (simulation map). Each grid cell has a probability that a mine
-strike may occur. The risk probability is one in the proximity radius of
-standard mines and zero outside of it. For top-attack mines, a maximum
-detection range and a launch attack range is specified. Within the
-detection range, the risk is non-zero but not one, while within the
-launch range, the risk is one everywhere. The mine risk is described
-further in the section about minefield types below. Figure 5 displays
-the radii for two overlapping top-attack mines. Regions colored in
-yellow are within the detection radius and regions shaded in red are
-within the attack radius. Note the region of overlap between the two
-mines, the red color demonstrates the increase in risk due to the
+style="width:2.9067in;height:3.91621in" class="center"/></p>
+<p>The Phase I minefield prediction algorithm applies mine type and
+positional information (in practice, sensor detection data) to produce a
+final gridded mine risk-map (simulation map). Each grid cell has a
+probability that a mine strike may occur. The risk probability is one in
+the proximity radius of standard mines and zero outside of it. For
+top-attack mines, a maximum detection range and a launch attack range is
+specified. Within the detection range, the risk is non-zero but not one,
+while within the launch range, the risk is one everywhere. The mine risk
+is described further in the section about minefield types below. Figure
+5 displays the radii for two overlapping top-attack mines. Regions
+colored in yellow are within the detection radius and regions shaded in
+red are within the attack radius. Note the region of overlap between the
+two mines, the red color demonstrates the increase in risk due to the
 vicinity of the two mines.</p>
 <p>For a given path P traversing any grid cells <span
 class="math inline">\(x_{1}\)</span>, <span
@@ -81,12 +81,12 @@ leads to errors in geo-registration (Figure 6). Pre-processing the data
 before geo-registration is necessary for simulation accuracy, especially
 as different types of GIS data are added and accounted for.</p>
 <p>A related factor to consider for simulation accuracy is a data
-source’s time of collection. When using two different data <img
-src="./media/image5.png"
-style="width:3.17361in;height:3.32292in" />sources for different aspects
-of a simulation, if they were collected on different dates, it is
-possible that one source accounts for a structure or road that the other
-does not.</p>
+source’s time of collection. When using two different data sources for
+different aspects of a simulation, if they were collected on different
+dates, it is possible that one source accounts for a structure or road
+that the other does not.</p>
+<p><img src="./media/image5.png"
+style="width:3.17361in;height:3.32292in" class="center"/></p>
 <ol start="2" type="1">
 <li><h2 id="algorithm-development">Algorithm Development</h2>
 <ol type="1">
@@ -113,7 +113,9 @@ deterministic, supporting interpretability of the ML modeling
 optimal and complete (Table 1) [10].</p>
 <p><img src="./media/image7.png"
 style="width:5.36994in;height:2.56602in"
-alt="Text Description automatically generated" /></p>
+alt="Text Description automatically generated" class="center"/></p>
+<p><img src="./media/image8.png"
+style="width:4.90903in;height:2.04236in" class="center"/>
 <p>CSLabs, using the A* approach as a baseline, developed a prototype
 algorithm for AI-Routes that calculates the optimal path and breacher
 firing patterns. The A* pathfinding was modified to interact with
@@ -121,29 +123,26 @@ objects on the gameboard, particularly mine types. Consequently,
 applying object properties to the gameboard grid, provides the path
 finding algorithms with relative distance and position information from
 any node, in a manner that is computationally efficient.</p>
-<p>While the A* approach by itself provides an optimal <img
-src="./media/image8.png" style="width:4.90903in;height:2.04236in" /><img
-src="./media/image9.png"
-style="width:0.18922in;height:1.85206in" />path, the combination of mine
-states (armed/disarmed) and paths is a combinatoric problem; where every
-mine state (armed/disarmed) represents a possible permutation. Figure 7
-demonstrates this. Node 1 is the optimal path with no mines, and every
-branch that follows represents a permutation with active mines. Each
-level L (0..4), represents a path decision and each left going branch
-(even numbered) represents a mine group that is breached, while the
-right going branch (odd numbered) represents a mine group that is not
-breached, thus an alternate path around the mine group must be found.
-Each mine group is a set of one-to-many mines that are co-located and
-must be removed from the path for a tank to traverse the current
-path-under-test (PUT). Each node greater than 1 is a decision point. For
-example, if the set of mine encounters is only four levels deep as seen
-in the figure, then PUT progression 1-2-4-8-16 gives the path where all
-mines are removed from the optimal path. In this case, the optimal path
-is identical to the path with no mines (node 1). At the other extreme,
-PUT progression 1-3-7-15-31 represents the path that avoids all mines
-(if such a path exists) and no mine breachers are expended. To test all
-possible options, in the worst-case scenario, the total number of paths
-N for all permutations to a given level L is:</p>
+<p>While the A* approach by itself provides an optimal path, the
+combination of mine states (armed/disarmed) and paths is a combinatoric
+problem; where every mine state (armed/disarmed) represents a possible
+permutation. Figure 7 demonstrates this. Node 1 is the optimal path with
+no mines, and every branch that follows represents a permutation with
+active mines. Each level L (0..4), represents a path decision and each
+left going branch (even numbered) represents a mine group that is
+breached, while the right going branch (odd numbered) represents a mine
+group that is not breached, thus an alternate path around the mine group
+must be found. Each mine group is a set of one-to-many mines that are
+co-located and must be removed from the path for a tank to traverse the
+current path-under-test (PUT). Each node greater than 1 is a decision
+point. For example, if the set of mine encounters is only four levels
+deep as seen in the figure, then PUT progression 1-2-4-8-16 gives the
+path where all mines are removed from the optimal path. In this case,
+the optimal path is identical to the path with no mines (node 1). At the
+other extreme, PUT progression 1-3-7-15-31 represents the path that
+avoids all mines (if such a path exists) and no mine breachers are
+expended. To test all possible options, in the worst-case scenario, the
+total number of paths N for all permutations to a given level L is:</p>
 <p><span class="math display">\[N = 2^{L + 1} - 1.\]</span></p>
 <p>N total simulations would need to be performed to find all
 combinations of path-mine options available. This is clearly an
@@ -194,7 +193,7 @@ obstructed. When the target (mine) is obstructed, then the breacher is
 ineffective and the mine is not removed.</p>
 <h3 id="minefield-types">Minefield Types</h3>
 <p><img src="./media/image12.png"
-style="width:4in;height:1.54808in" />Several types of mines were modeled
+style="width:4in;height:1.54808in" class="center"/>Several types of mines were modeled
 in the simulations, all of which were anti-tank mines. In the future,
 anti-personnel mines may be modeled as well depending on simulation
 scenarios and customer feedback. The standard mine used was the TM-62M
@@ -325,9 +324,9 @@ outer radius to the inner radius. A path cannot go within the radius of
 conventional AT mines or within the inner radius of a top-attack mine as
 that is considered too high of a risk.</p>
 <p><img src="./media/image14.png"
-style="width:6.21748in;height:3.49471in" /><img
+style="width:6.21748in;height:3.49471in" class="center"/><img
 src="./media/image15.png"
-style="width:6.21748in;height:3.49471in" /></p>
+style="width:6.21748in;height:3.49471in" class="center"/></p>
 <p>Simulation results for <strong>scenario 1</strong> (Figure 10) show
 that the modified A* algorithm successfully found all four possible
 successful path-breacher configurations. Path 6 minimizes path length
@@ -341,9 +340,9 @@ mines by taking the longer path to get to the path endpoint. Higher path
 difficulty in paths 1 and 4 are a result of the paths going slightly
 offroad to avoid active mines.</p>
 <p><img src="./media/image18.png"
-style="width:2.80694in;height:1.33333in" /></p>
+style="width:2.80694in;height:1.33333in" class="center"/></p>
 <p><img src="./media/image19.png"
-style="width:3.87742in;height:4.36655in" /></p>
+style="width:3.87742in;height:4.36655in" class="center"/></p>
 <p>Results for <strong>scenario 2</strong> (Figure 11) show three
 optimal paths: minimized path length, minimized breacher rounds used,
 and a best overall minimization of path risk, difficulty, and mines
@@ -359,13 +358,13 @@ should also be noted that the path risk score accumulates from distance
 traveled within the 100-meter perimeter of the active mines.</p>
 <p><img src="./media/image21.png"
 style="width:3.18056in;height:1.13333in"
-alt="Table Description automatically generated" /></p>
+alt="Table Description automatically generated" class="center"/></p>
 <p><img src="./media/image22.png"
-style="width:5.89535in;height:6.34884in" /></p>
+style="width:5.89535in;height:6.34884in" class="center"/></p>
 <h3 id="urban-scenario-using-gis-data">Urban Scenario Using GIS
 Data</h3>
 <p><img src="./media/image24.png"
-style="width:3.84167in;height:2.12986in" />For this and subsequent
+style="width:3.84167in;height:2.12986in" class="center"/>For this and subsequent
 scenarios, GIS tools were used to retrieve geo-registered data for
 creating simulations at real-world locations, including DEM data (Figure
 12). The simulation map for this scenario is a fusion of street map data
@@ -376,7 +375,7 @@ scene. The start point for the path is in the upper-left corner of the
 map and the goal end point is by a building in the south-central region
 of the map.</p>
 <p><img src="./media/image26.png"
-style="width:3.52629in;height:4.66424in" /></p>
+style="width:3.52629in;height:4.66424in" class="center"/></p>
 <p>As with the initial scenarios, running simulations for this urban
 environment results in path options that best minimize different metrics
 (Figure 14). Path 189 shows the path that minimizes breacher round usage
@@ -389,9 +388,9 @@ through the streets taking out any mines that are in that direct path.
 Path 463 balances minimizing path risk and breacher rounds while taking
 a path that is just slightly more difficult.</p>
 <p><img src="./media/image28.png"
-style="width:3.18056in;height:1.12708in" /></p>
+style="width:3.18056in;height:1.12708in" class="center"/></p>
 <p><img src="./media/image29.png"
-style="width:5.5814in;height:6.94186in" /></p>
+style="width:5.5814in;height:6.94186in" class="center"/></p>
 <h3 id="kyiv-urban-scenario-using-gis-data">Kyiv Urban Scenario Using
 GIS Data</h3>
 <p>Following direction from C5ISR during the meeting on January
@@ -418,7 +417,7 @@ were made before that discussion, there are top-attack mines present in
 the scenario. In future simulations of this or similar scenarios, those
 mines can be removed and replaced with more conventional AT mines.</p>
 <p><img src="./media/image31.png"
-style="width:3.41347in;height:3.81882in" /></p>
+style="width:3.41347in;height:3.81882in" class="center"/></p>
 <p>Path 298 from this simulation shows a path that avoids having to
 neutralize any mines but has a higher path risk and much higher path
 difficulty than the other optimal paths. The path achieves this by
@@ -443,9 +442,9 @@ path has been found and only requires minor smoothing which can be done
 independent of the primary cost optimizations.</p>
 <p><img src="./media/image33.png"
 style="width:3.18056in;height:1.13333in"
-alt="Table Description automatically generated" /></p>
+alt="Table Description automatically generated" class="center"/></p>
 <p><img src="./media/image34.png"
-style="width:6.00207in;height:6.41861in" /></p>
+style="width:6.00207in;height:6.41861in" class="center"/></p>
 <h3 id="kyiv-ruralforested-scenario-using-gis-data">Kyiv Rural/Forested
 Scenario Using GIS Data</h3>
 <p>The last scenario that was developed during Phase I was a 1.7 km x
@@ -458,7 +457,7 @@ lead to the village. Top-attack mines were placed along the road that
 runs along the south side of the village to deny entry into the village.
 The breacher system is co-located with the starting point.</p>
 <p><img src="./media/image36.png"
-style="width:3.41347in;height:3.81882in" /></p>
+style="width:3.41347in;height:3.81882in" class="center"/></p>
 <p>For the first simulation results of this scenario (Figure 18), the
 breacher was given a large enough range to neutralize any mines on the
 map. Path 580 minimizes the use of breacher rounds, neutralizing only
@@ -473,9 +472,9 @@ except that it also destroys the AT mines on the road at the end to
 minimize path difficulty and risk while using the most breachers.</p>
 <p><img src="./media/image38.png"
 style="width:3.18056in;height:1.12708in"
-alt="Table Description automatically generated" /></p>
+alt="Table Description automatically generated" class="center"/></p>
 <p><img src="./media/image39.png"
-style="width:5.88265in;height:6.30208in" /></p>
+style="width:5.88265in;height:6.30208in" class="center"/></p>
 <p>The second set of simulation results for this scenario gives the
 breacher a limited range of 1 km (Figure 19). This limits its ability to
 take out mines at the end of the path. Path 82 is like path 580 from the
@@ -485,9 +484,9 @@ end, the path is forced to go around them since the breacher cannot
 reach these mines.</p>
 <p><img src="./media/image41.png"
 style="width:3.18056in;height:0.72639in"
-alt="Graphical user interface Description automatically generated with low confidence" /></p>
+alt="Graphical user interface Description automatically generated with low confidence" class="center"/></p>
 <p><img src="./media/image42.png"
-style="width:3.55409in;height:3.93676in" /></p>
+style="width:3.55409in;height:3.93676in" class="center"/></p>
 <h2 id="mine-placement-tool-proof-of-concept">Mine Placement Tool
 Proof-of-Concept</h2>
 <p>During Phase I, following a suggestion made after the second
@@ -497,11 +496,11 @@ will aid in research as it facilitates setting up different minefield
 configurations for simulation and may have future utility for
 end-users.</p>
 <p><img src="./media/image44.png"
-style="width:3.34722in;height:3.67778in" /></p>
+style="width:3.34722in;height:3.67778in" class="center"/></p>
 <p><img src="./media/image46.png"
-style="width:6.31304in;height:3.45564in" /><img
+style="width:6.31304in;height:3.45564in" class="center"/><img
 src="./media/image47.png"
-style="width:6.31304in;height:3.45564in" /></p>
+style="width:6.31304in;height:3.45564in" class="center"/></p>
 <p>The current proof-of-concept tool gives the user the ability to load
 in up to two different geo-registered maps of a region and then place or
 remove individual mines from the scene. If two maps are loaded, they can
@@ -515,8 +514,8 @@ be parsed by the simulation component of AI-Routes. That exported file
 can be reloaded back into the mine placement tool for further
 editing.</p>
 <p><img src="./media/image50.png"
-style="width:6.17391in;height:3.37939in" /><img
+style="width:6.17391in;height:3.37939in" class="center"/><img
 src="./media/image51.png"
-style="width:6.17391in;height:3.37939in" /></p>
+style="width:6.17391in;height:3.37939in" class="center"/></p>
 </body>
 </html>
